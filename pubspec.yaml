@@ -1,0 +1,59 @@
+name: dream
+
+publish_to: 'none'
+
+version: 1.0.0
+
+environment:
+  sdk: ">=2.16.0 <3.0.0"
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Cookie
+      fonts:
+        - asset: fonts/Cookie-Regular.ttf
+  assets:
+    - images/avatar.jpeg
+    - images/svg/todo.svg
+    - images/svg/calendar.svg
+    - images/svg/booklet.svg
+    - images/svg/wallet.svg
+    - images/svg/calendar_todo.svg
+    - images/svg/bill.svg
+    - images/svg/sun.svg
+    - images/svg/archive_drawer.svg
+    - images/svg/stack.svg
+    - images/svg/menu_fold.svg
+    - images/svg/menu_unfold.svg
+    - images/ui/empty.png
+    - images/svg/calendar_2.svg
+    - images/svg/arrow_left.svg
+    - images/svg/arrow_right.svg
+    - images/svg/arrow_left_s.svg
+    - images/svg/arrow_right_s.svg
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http:
+  provider:
+  url_launcher: 6.0.20
+  path:
+  hive:
+  hive_flutter:
+  flutter_svg:
+  uuid:
+  isar:
+  isar_flutter_libs:
+  bitsdojo_window:
+  syncfusion_flutter_datepicker:
+  syncfusion_flutter_calendar:
+  pillow:
+    path: ../pillow
+
+dev_dependencies:
+  flutter_lints:
+  hive_generator:
+  isar_generator:
+  build_runner:
