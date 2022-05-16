@@ -50,7 +50,7 @@ dependencies:
   syncfusion_flutter_datepicker:
   syncfusion_flutter_calendar:
   pillow:
-    path: ../pillow
+    path: ../dream-pillow
 
 dev_dependencies:
   flutter_lints:
