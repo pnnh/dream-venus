@@ -35,7 +35,7 @@ class HomePageWidget extends StatelessWidget {
                           overlayColor:
                               MaterialStateProperty.all(Colors.transparent)),
                       onPressed: () async {
-                        const url = "https://www.baidu.com";
+                        const url = "http://127.0.0.1:5500";
                         if (await canLaunch(url)) {
                           launch(url);
                         }
@@ -54,7 +54,7 @@ class HomePageWidget extends StatelessWidget {
                           overlayColor:
                               MaterialStateProperty.all(Colors.transparent)),
                       onPressed: () async {
-                        const url = "https://www.baidu.com";
+                        const url = "http://127.0.0.1:5500";
                         if (await canLaunch(url)) {
                           launch(url);
                         }
@@ -62,7 +62,7 @@ class HomePageWidget extends StatelessWidget {
                     ),
                     TextButton(
                       child: const Text(
-                        "动态",
+                        "实用工具",
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
@@ -73,7 +73,7 @@ class HomePageWidget extends StatelessWidget {
                           overlayColor:
                               MaterialStateProperty.all(Colors.transparent)),
                       onPressed: () async {
-                        const url = "https://www.baidu.com";
+                        const url = "http://127.0.0.1:1234";
                         if (await canLaunch(url)) {
                           launch(url);
                         }

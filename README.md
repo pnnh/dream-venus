@@ -6,11 +6,14 @@ flutter示例程序
 
 ```shell
 flutter run -d chrome --web-renderer html
-flutter build web --web-renderer canvaskit
+flutter build web --release --web-renderer auto --dart-define=FLUTTER_WEB_CANVASKIT_URL=canvaskit/  
+flutter build web --release --web-renderer auto
 ```
 
-项目叫dream，域名叫drm.sfx.xyz，中文名叫筑梦
-
-那是你不知道是啥却一直放不下想要做的东西，是一种执念
+在本地模拟生产环境资源托管
+```shell
+cd dist
+http-server --cors
+```
 
 

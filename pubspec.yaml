@@ -8,11 +8,18 @@ environment:
   sdk: ">=2.16.0 <3.0.0"
 
 flutter:
-  uses-material-design: true
   fonts:
     - family: Cookie
       fonts:
         - asset: fonts/Cookie-Regular.ttf
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto/Roboto-Regular.ttf
+        - asset: fonts/Roboto/Roboto-Italic.ttf
+    - family: NotoSansSC
+      fonts:
+        - asset: fonts/NotoSansSC/NotoSansSC-Regular.otf
+
   assets:
     - images/avatar.jpeg
     - images/svg/todo.svg
@@ -49,6 +56,7 @@ dependencies:
   bitsdojo_window:
   syncfusion_flutter_datepicker:
   syncfusion_flutter_calendar:
+  google_fonts: ^2.3.2
   pillow:
     path: ../dream-pillow
 
