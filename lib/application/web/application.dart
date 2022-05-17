@@ -11,9 +11,11 @@ class Application extends StatelessWidget {
       title: '网页应用',
       theme: ThemeData(
         //fontFamily: 'Raleway',
-        textTheme: GoogleFonts.latoTextTheme(
-          Theme.of(context).textTheme, // If this is not set, then ThemeData.light().textTheme is used.
-        ),
+//         textTheme: GoogleFonts.latoTextTheme(
+//           Theme.of(context).textTheme, // If this is not set, then ThemeData.light().textTheme is used.
+//         ),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: "NotoSansSC", //全局默认字体
       ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(body: HomePageWidget()),
