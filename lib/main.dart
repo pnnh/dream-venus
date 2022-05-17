@@ -6,6 +6,7 @@ import 'package:dream/application/desktop/application.dart'
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pillow/pillow.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 import 'config.dart';
 
@@ -29,6 +30,7 @@ void main() async {
   }
   debugPrint("platformName :- " + platformName.toString());
 
+  setPathUrlStrategy();
   await application.initApp();
 
   await Pillow.initPlugin(resUrl: getResUrl());
