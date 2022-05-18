@@ -15,9 +15,9 @@ flutter:
     - family: Roboto
       fonts:
         - asset: fonts/Roboto/Roboto-Regular.ttf
-    - family: NotoSansSC
+    - family: WqyMicroHeiLite
       fonts:
-        - asset: fonts/NotoSansSC/NotoSansSC-Regular.otf
+        - asset: fonts/WenQuanYi/wqy-microhei-lite.ttc
 
   assets:
     - images/avatar.jpeg
@@ -55,7 +55,6 @@ dependencies:
   bitsdojo_window:
   syncfusion_flutter_datepicker:
   syncfusion_flutter_calendar:
-  google_fonts: ^2.3.2
   url_strategy: ^0.2.0
   pillow:
     path: ../dream-pillow

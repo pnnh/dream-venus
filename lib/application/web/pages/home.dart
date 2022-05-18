@@ -46,7 +46,7 @@ class HomePageWidget extends StatelessWidget {
                         "文章",
                         style: TextStyle(
                             color: Colors.black,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w800,
                             fontSize: 16),
                       ),
                       style: ButtonStyle(
