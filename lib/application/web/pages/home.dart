@@ -1,6 +1,7 @@
-import 'package:dream/application/web/pages/random.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'login.dart';
 
 class HomePageWidget extends StatelessWidget {
   const HomePageWidget({Key? key}) : super(key: key);
@@ -22,6 +23,16 @@ class HomePageWidget extends StatelessWidget {
                   // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
+                      style: ButtonStyle(
+                          splashFactory: NoSplash.splashFactory,
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent)),
+                      onPressed: () async {
+                        const url = "http://127.0.0.1:5500";
+                        if (await canLaunch(url)) {
+                          launch(url);
+                        }
+                      },
                       child: const Text(
                         "sfx.xyz",
                         style: TextStyle(
@@ -30,6 +41,8 @@ class HomePageWidget extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                             fontSize: 36),
                       ),
+                    ),
+                    TextButton(
                       style: ButtonStyle(
                           splashFactory: NoSplash.splashFactory,
                           overlayColor:
@@ -40,8 +53,6 @@ class HomePageWidget extends StatelessWidget {
                           launch(url);
                         }
                       },
-                    ),
-                    TextButton(
                       child: const Text(
                         "文章",
                         style: TextStyle(
@@ -49,25 +60,8 @@ class HomePageWidget extends StatelessWidget {
                             fontWeight: FontWeight.w800,
                             fontSize: 16),
                       ),
-                      style: ButtonStyle(
-                          splashFactory: NoSplash.splashFactory,
-                          overlayColor:
-                              MaterialStateProperty.all(Colors.transparent)),
-                      onPressed: () async {
-                        const url = "http://127.0.0.1:5500";
-                        if (await canLaunch(url)) {
-                          launch(url);
-                        }
-                      },
                     ),
                     TextButton(
-                      child: const Text(
-                        "实用工具",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16),
-                      ),
                       style: ButtonStyle(
                           splashFactory: NoSplash.splashFactory,
                           overlayColor:
@@ -78,15 +72,15 @@ class HomePageWidget extends StatelessWidget {
                           launch(url);
                         }
                       },
-                    ),
-                    TextButton(
                       child: const Text(
-                        "随机值",
+                        "实用工具",
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
                             fontSize: 16),
                       ),
+                    ),
+                    TextButton(
                       style: ButtonStyle(
                           splashFactory: NoSplash.splashFactory,
                           overlayColor:
@@ -97,6 +91,13 @@ class HomePageWidget extends StatelessWidget {
                           launch(url);
                         }
                       },
+                      child: const Text(
+                        "随机值",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16),
+                      ),
                     ),
                   ],
                 ),
@@ -119,7 +120,7 @@ class HomePageWidget extends StatelessWidget {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: const [RandomWidget()],
+                children: const [LoginWidget()],
               ),
             )
           ],
