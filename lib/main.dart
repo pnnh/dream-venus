@@ -31,8 +31,8 @@ void main() async {
   debugPrint("platformName :- " + platformName.toString());
 
   setPathUrlStrategy();
-  await application.initApp();
+  var app = await application.initApp();
 
   await Pillow.initPlugin(resUrl: getResUrl());
-  runApp(const application.Application());
+  runApp(app);
 }

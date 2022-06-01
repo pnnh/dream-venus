@@ -17,7 +17,7 @@ class Application extends StatefulWidget {
 class _ApplicationState extends State<Application> {
   final BookRouterDelegate _routerDelegate = BookRouterDelegate();
   final BookRouteInformationParser _routeInformationParser =
-  BookRouteInformationParser();
+      BookRouteInformationParser();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class _ApplicationState extends State<Application> {
   }
 }
 
-Future<void> initApp() async {
+Future<Widget> initApp() async {
   await HiveStore.init();
   doWhenWindowReady(() {
     appWindow.minSize = const Size(640, 480);
@@ -52,4 +52,5 @@ Future<void> initApp() async {
     appWindow.alignment = Alignment.center;
     appWindow.show();
   });
+  return Application();
 }

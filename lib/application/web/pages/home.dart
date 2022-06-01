@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'login.dart';
-
 class HomePageWidget extends StatelessWidget {
   const HomePageWidget({Key? key}) : super(key: key);
 
@@ -120,7 +118,7 @@ class HomePageWidget extends StatelessWidget {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: const [LoginWidget()],
+                children: const [Text("Home")],
               ),
             )
           ],
