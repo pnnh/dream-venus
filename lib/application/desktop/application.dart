@@ -7,17 +7,17 @@ import 'package:dream/services/store/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Application extends StatefulWidget {
-  const Application({Key? key}) : super(key: key);
+class DesktopApplication extends StatefulWidget {
+  const DesktopApplication({Key? key}) : super(key: key);
 
   @override
-  _ApplicationState createState() => _ApplicationState();
+  State<DesktopApplication> createState() => _DesktopApplicationState();
 }
 
-class _ApplicationState extends State<Application> {
-  final BookRouterDelegate _routerDelegate = BookRouterDelegate();
-  final BookRouteInformationParser _routeInformationParser =
-      BookRouteInformationParser();
+class _DesktopApplicationState extends State<DesktopApplication> {
+  final DesktopRouterDelegate _routerDelegate = DesktopRouterDelegate();
+  final DesktopRouteInformationParser _routeInformationParser =
+      DesktopRouteInformationParser();
 
   @override
   Widget build(BuildContext context) {
@@ -52,5 +52,5 @@ Future<Widget> initApp() async {
     appWindow.alignment = Alignment.center;
     appWindow.show();
   });
-  return Application();
+  return const DesktopApplication();
 }

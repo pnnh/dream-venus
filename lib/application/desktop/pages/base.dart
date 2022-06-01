@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 
 import 'other.dart';
 
-class MyPage extends Page {
-  final BookRoutePath routePath;
+class DesktopPage extends Page {
+  final DesktopRoutePath routePath;
 
-  MyPage(
+  DesktopPage(
     this.routePath,
   ) : super(name: routePath.uri.toString(), key: ValueKey(routePath));
 
   @override
   Route createRoute(BuildContext context) {
-    return CustomPageRoute(
+    return DesktopPageRoute(
       (BuildContext context) {
         debugPrint("createRoute ${routePath.uri}");
         return Scaffold(

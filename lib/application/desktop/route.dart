@@ -2,64 +2,65 @@ import 'package:dream/application/desktop/pages/base.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class CustomPageRoute extends MaterialPageRoute {
-  CustomPageRoute(WidgetBuilder builder, {RouteSettings? settings})
+class DesktopPageRoute extends MaterialPageRoute {
+  DesktopPageRoute(WidgetBuilder builder, {RouteSettings? settings})
       : super(settings: settings, builder: builder);
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 0);
 }
 
-class BookRoutePath {
+class DesktopRoutePath {
   late Uri uri;
 
-  BookRoutePath(String location) {
+  DesktopRoutePath(String location) {
     uri = Uri.parse(location);
   }
 
-  BookRoutePath.home() : this("/");
+  DesktopRoutePath.home() : this("/");
 
-  BookRoutePath.calendar() : this("/calendar");
+  DesktopRoutePath.calendar() : this("/calendar");
 
-  BookRoutePath.other() : this("/other");
+  DesktopRoutePath.other() : this("/other");
 }
 
-class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
+class DesktopRouteInformationParser
+    extends RouteInformationParser<DesktopRoutePath> {
   @override
-  Future<BookRoutePath> parseRouteInformation(
+  Future<DesktopRoutePath> parseRouteInformation(
       RouteInformation routeInformation) async {
     debugPrint('BookRouteInformationParser ${routeInformation.location}');
     return routeInformation.location != null
-        ? BookRoutePath(routeInformation.location!)
-        : BookRoutePath.home();
+        ? DesktopRoutePath(routeInformation.location!)
+        : DesktopRoutePath.home();
   }
 
   @override
-  RouteInformation restoreRouteInformation(BookRoutePath configuration) {
+  RouteInformation restoreRouteInformation(DesktopRoutePath configuration) {
     return RouteInformation(location: configuration.uri.toString());
   }
 }
 
-class BookRouterDelegate extends RouterDelegate<BookRoutePath>
-    with ChangeNotifier, PopNavigatorRouterDelegateMixin<BookRoutePath> {
+class DesktopRouterDelegate extends RouterDelegate<DesktopRoutePath>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<DesktopRoutePath> {
   @override
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  final _stack = <BookRoutePath>[BookRoutePath.home()];
+  final _stack = <DesktopRoutePath>[DesktopRoutePath.home()];
   int _currentIndex = 0;
 
   List<String> get stack => List.unmodifiable(_stack);
 
-  BookRouterDelegate();
+  DesktopRouterDelegate();
 
-  static BookRouterDelegate of(BuildContext context) {
+  static DesktopRouterDelegate of(BuildContext context) {
     final delegate = Router.of(context).routerDelegate;
-    assert(delegate is BookRouterDelegate, 'Delegate type must match');
-    return delegate as BookRouterDelegate;
+    assert(delegate is DesktopRouterDelegate, 'Delegate type must match');
+    return delegate as DesktopRouterDelegate;
   }
 
   @override
-  BookRoutePath get currentConfiguration => _stack[_currentIndex];
+  DesktopRoutePath get currentConfiguration => _stack[_currentIndex];
 
   bool isFirst() {
     return _currentIndex == 0;
@@ -70,7 +71,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
   }
 
   void go(String location) {
-    var newRoute = BookRoutePath(location);
+    var newRoute = DesktopRoutePath(location);
     for (var i = _currentIndex + 1; i < _stack.length; i++) {
       _stack.removeAt(i);
     }
@@ -94,12 +95,12 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
   }
 
   @override
-  Future<void> setInitialRoutePath(BookRoutePath configuration) {
+  Future<void> setInitialRoutePath(DesktopRoutePath configuration) {
     return setNewRoutePath(configuration);
   }
 
   @override
-  Future<void> setNewRoutePath(BookRoutePath configuration) async {
+  Future<void> setNewRoutePath(DesktopRoutePath configuration) async {
     debugPrint('setNewRoutePath ${configuration.uri}');
     _stack
       ..clear()
@@ -121,7 +122,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     List<Page<dynamic>> pages = [];
     for (var i = 0; i < _stack.length; i++) {
       if (i <= _currentIndex) {
-        pages.add(MyPage(_stack[i]));
+        pages.add(DesktopPage(_stack[i]));
       }
     }
     return Navigator(

@@ -1,3 +1,4 @@
+import 'package:dream/application/web/pages/partial/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:validators/validators.dart';
@@ -17,92 +18,102 @@ class _LoginWidgetState extends State<LoginWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        const HeaderWidget(),
+        const SizedBox(height: 16),
         Container(
-          padding: const EdgeInsets.all(8),
-          width: 240,
-          height: 48,
-          child: Focus(
-              child: TextField(
-                autofocus: true,
-                keyboardType: TextInputType.emailAddress,
-                style: const TextStyle(fontSize: 14),
-                decoration: InputDecoration(
-                  hoverColor: Colors.white,
-                  hintText: '请输入邮箱',
-                  hintStyle: const TextStyle(fontSize: 14),
-                  contentPadding: const EdgeInsets.only(left: 8, top: 4),
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                        color: Color.fromRGBO(240, 240, 240, 100),
-                        width: 1,
-                        style: BorderStyle.solid),
-                    borderRadius: BorderRadius.circular(4),
+            width: 1024,
+            color: Colors.white,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                width: 240,
+                height: 48,
+                child: Focus(
+                    child: TextField(
+                      autofocus: true,
+                      keyboardType: TextInputType.emailAddress,
+                      style: const TextStyle(fontSize: 14),
+                      decoration: InputDecoration(
+                        hoverColor: Colors.white,
+                        hintText: '请输入邮箱',
+                        hintStyle: const TextStyle(fontSize: 14),
+                        contentPadding: const EdgeInsets.only(left: 8, top: 4),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Color.fromRGBO(240, 240, 240, 100),
+                              width: 1,
+                              style: BorderStyle.solid),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      controller: emailController,
+                    ),
+                    onFocusChange: (hasFocus) {
+                      setState(() {
+                        errorMessage = emailController.text.isNotEmpty &&
+                                !isEmail(emailController.text)
+                            ? "邮箱格式有误"
+                            : "";
+                      });
+                    }),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                width: 160,
+                height: 48,
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  style: const TextStyle(fontSize: 14),
+                  decoration: InputDecoration(
+                    hoverColor: Colors.white,
+                    hintText: '请输入验证码',
+                    hintStyle: const TextStyle(fontSize: 14),
+                    contentPadding: const EdgeInsets.only(left: 8, top: 4),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          color: Color.fromRGBO(240, 240, 240, 100),
+                          width: 1,
+                          style: BorderStyle.solid),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                  controller: codeController,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: ElevatedButton(
+                  style:
+                      ElevatedButton.styleFrom(fixedSize: const Size(100, 32)),
+                  onPressed: () async {
+                    if (!isEmail(emailController.text)) {
+                      return;
+                    }
+                    debugPrint(
+                        "--> ${emailController.text} ${codeController.text}");
+                  },
+                  child: const Text(
+                    "登录",
+                    style: TextStyle(fontSize: 14, height: 1),
                   ),
                 ),
-                controller: emailController,
               ),
-              onFocusChange: (hasFocus) {
-                setState(() {
-                  errorMessage = emailController.text.isNotEmpty &&
-                          !isEmail(emailController.text)
-                      ? "邮箱格式有误"
-                      : "";
-                });
-              }),
-        ),
-        Container(
-          padding: const EdgeInsets.all(8),
-          width: 160,
-          height: 48,
-          child: TextField(
-            keyboardType: TextInputType.number,
-            style: const TextStyle(fontSize: 14),
-            decoration: InputDecoration(
-              hoverColor: Colors.white,
-              hintText: '请输入验证码',
-              hintStyle: const TextStyle(fontSize: 14),
-              contentPadding: const EdgeInsets.only(left: 8, top: 4),
-              filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                borderSide: const BorderSide(
-                    color: Color.fromRGBO(240, 240, 240, 100),
-                    width: 1,
-                    style: BorderStyle.solid),
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ),
-            controller: codeController,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(8),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(fixedSize: const Size(100, 32)),
-            onPressed: () async {
-              if (!isEmail(emailController.text)) {
-                return;
-              }
-              debugPrint("--> ${emailController.text} ${codeController.text}");
-            },
-            child: const Text(
-              "登录",
-              style: TextStyle(fontSize: 14, height: 1),
-            ),
-          ),
-        ),
-        if (errorMessage.isNotEmpty)
-          Container(
-              padding: const EdgeInsets.all(8),
-              child:
-                  Text(errorMessage, style: const TextStyle(color: Colors.red)))
+              if (errorMessage.isNotEmpty)
+                Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(errorMessage,
+                        style: const TextStyle(color: Colors.red)))
+            ]))
       ],
     );
   }

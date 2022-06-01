@@ -30,7 +30,7 @@ class _TitleBarWidget extends State<TitleBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var routerDelegate = BookRouterDelegate.of(context);
+    var routerDelegate = DesktopRouterDelegate.of(context);
     return Container(
         height: 40,
         color: const Color.fromRGBO(231, 231, 231, 100),

@@ -6,7 +6,7 @@ class WebApplication extends StatefulWidget {
   const WebApplication({Key? key}) : super(key: key);
 
   @override
-  _WebApplicationState createState() => _WebApplicationState();
+  State<WebApplication> createState() => _WebApplicationState();
 }
 
 class _WebApplicationState extends State<WebApplication> {
@@ -31,5 +31,5 @@ class _WebApplicationState extends State<WebApplication> {
 }
 
 Future<Widget> initApp() async {
-  return WebApplication();
+  return const WebApplication();
 }

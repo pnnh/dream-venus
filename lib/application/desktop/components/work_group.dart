@@ -17,7 +17,7 @@ class _WorkGroupWidget extends State<WorkGroupWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var routerDelegate = BookRouterDelegate.of(context);
+    var routerDelegate = DesktopRouterDelegate.of(context);
     debugPrint("work_group ${routerDelegate.currentConfiguration.uri}");
     return Column(children: [
       const AvatarWidget(),
@@ -26,7 +26,7 @@ class _WorkGroupWidget extends State<WorkGroupWidget> {
           icon: SvgPicture.asset(
             "images/svg/todo.svg",
             color: routerDelegate.currentConfiguration.uri.path ==
-                    BookRoutePath.home().uri.path
+                    DesktopRoutePath.home().uri.path
                 ? selectedColor
                 : defaultColor,
           ),
@@ -39,7 +39,7 @@ class _WorkGroupWidget extends State<WorkGroupWidget> {
           icon: SvgPicture.asset(
             "images/svg/booklet.svg",
             color: routerDelegate.currentConfiguration.uri.path ==
-                    BookRoutePath.calendar().uri.path
+                    DesktopRoutePath.calendar().uri.path
                 ? selectedColor
                 : defaultColor,
           ),
@@ -52,7 +52,7 @@ class _WorkGroupWidget extends State<WorkGroupWidget> {
           icon: SvgPicture.asset(
             "images/svg/todo.svg",
             color: routerDelegate.currentConfiguration.uri.path ==
-                    BookRoutePath.other().uri.path
+                    DesktopRoutePath.other().uri.path
                 ? selectedColor
                 : defaultColor,
           ),
