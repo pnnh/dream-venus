@@ -59,6 +59,7 @@ dependencies:
   validators: ^3.0.0
   pillow:
     path: ../dream-pillow
+  graphql_flutter: ^5.1.0
 
 dev_dependencies:
   flutter_lints:
