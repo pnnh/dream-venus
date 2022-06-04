@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:split_view/split_view.dart';
 
 class WorkBodyWidget extends StatefulWidget {
   final Task task;
@@ -88,107 +89,48 @@ class _WorkBodyWidgetState extends State<WorkBodyWidget> {
             ),
             const SizedBox(height: 24),
             Expanded(
-                child: GestureDetector(
-              onTapDown: (TapDownDetails details) {
-                print('点击分割线');
-                var diff = sourceHeight - details.localPosition.dy.abs();
-                if (diff <= 5 && diff >= -5) {
-                  setState(() {
-                    dragCallback = (DragUpdateDetails details) {
-                      print(
-                          'onDragUpdate: ${details.delta.dy} ${details.localPosition.dy} '
-                          '${details.globalPosition.dy}');
-                      var newSourceHeight = sourceHeight + details.delta.dy;
-                      print(
-                          'onDragUpdate222: $sourceHeight ${newSourceHeight}');
-
-                      if (newSourceHeight < 120 ||
-                          newSourceHeight > 640 ||
-                          details.localPosition.dy < 120 ||
-                          details.localPosition.dy > 640) return;
-                      setState(() {
-                        sourceHeight = newSourceHeight;
-                      });
-                    };
-                    dragEndCallback = (DragEndDetails details) {
-                      print('点击分割线5');
-                      setState(() {
-                        dragCallback = null;
-                        dragEndCallback = null;
-                      });
-                    };
-                  });
-                }
-              },
-              // onLongPressUp: () {
-              //   print('点击分割线2');
-              //   // setState(() {
-              //   //   dragCallback = null;
-              //   // });
-              // },
-              // onLongPressCancel: () {
-              //   print('点击分割线3');
-              // },
-              // onLongPressEnd: (LongPressEndDetails details) {
-              //   print('点击分割线4');
-              // },
-              // onVerticalDragStart: (DragStartDetails details) {
-              //   var diff = sourceHeight - details.localPosition.dy.abs();
-              //   if (diff <= 5 && diff >= -5) {
-              //     setState(() {
-              //       isDragging = true;
-              //     });
-              //   }
-              // },
-              onVerticalDragUpdate: dragCallback,
-              // onVerticalDragUpdate: (DragUpdateDetails details) {
-              //   print(
-              //       'onDragUpdate: ${details.delta.dy} ${details
-              //           .localPosition.dy} '
-              //           '${details.globalPosition.dy}');
-              //   var newSourceHeight = sourceHeight + details.delta.dy;
-              //   print('onDragUpdate222: $sourceHeight ${newSourceHeight}');
-              //
-              //   if (newSourceHeight < 120 ||
-              //       newSourceHeight > 640 ||
-              //       details.localPosition.dy < 120 ||
-              //       details.localPosition.dy > 640 ||
-              //       !isDragging) return;
-              //   setState(() {
-              //     sourceHeight = newSourceHeight;
-              //   });
-              // },
-              onVerticalDragEnd: dragEndCallback,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(
-                      height: sourceHeight,
-                      child: TextField(
-                        keyboardType: TextInputType.multiline,
-                        minLines: null,
-                        maxLines: null,
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.all(4),
-                          border: InputBorder.none,
-                          filled: true,
-                          fillColor: Colors.white,
-                          hoverColor: Colors.white,
-                          hintText: "任务正文",
-                        ),
-                        controller: bodyController,
-                        onChanged: (text) {
-                          debugPrint("WorkBodyWidget body update $text");
-                          todoProvider.putItem(
-                              widget.task.key, widget.task.title, text);
-                        },
-                        onTap: () {
-                          print('Editing stated $widget');
-                        },
-                      )),
-                  Container(height: 4, color: Colors.red),
-                  Expanded(
-                      child: TextField(
+                child: SplitView(
+              viewMode: SplitViewMode.Vertical,
+              indicator: SplitIndicator(viewMode: SplitViewMode.Vertical),
+              gripSize: 8,
+              gripColor: Color(0XFFEEEEEE),
+              gripColorActive: Color(0XFFEEEEEE),
+              activeIndicator: const SplitIndicator(
+                viewMode: SplitViewMode.Vertical,
+                isActive: true,
+              ),
+              controller: SplitViewController(
+                  limits: [WeightLimit(min: 0.1), WeightLimit(min: 0.1)]),
+              onWeightChanged: (w) => print("Vertical $w"),
+              children: [
+                Container(
+                  child: TextField(
+                    keyboardType: TextInputType.multiline,
+                    minLines: null,
+                    maxLines: null,
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.all(4),
+                      border: InputBorder.none,
+                      filled: true,
+                      fillColor: Colors.white,
+                      hoverColor: Colors.white,
+                      hintText: "任务正文",
+                    ),
+                    controller: bodyController,
+                    onChanged: (text) {
+                      debugPrint("WorkBodyWidget body update $text");
+                      todoProvider.putItem(
+                          widget.task.key, widget.task.title, text);
+                    },
+                    onTap: () {
+                      print('Editing stated $widget');
+                    },
+                  ),
+                  color: Colors.white,
+                ),
+                Container(
+                  color: Colors.white,
+                  child: TextField(
                     keyboardType: TextInputType.multiline,
                     minLines: null,
                     maxLines: null,
@@ -207,11 +149,11 @@ class _WorkBodyWidgetState extends State<WorkBodyWidget> {
                           widget.task.key, widget.task.title, text);
                     },
                     onTap: () {
-                      print('Editing stated2 $widget');
+                      debugPrint('Editing stated2 $widget');
                     },
-                  ))
-                ],
-              ),
+                  ),
+                ),
+              ],
             ))
           ]),
           if (homeProvider.showDatePicker)
