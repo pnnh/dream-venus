@@ -2,9 +2,7 @@ import 'package:dream/application/desktop/provider/home.dart';
 import 'package:dream/application/desktop/provider/todo.dart';
 import 'package:dream/services/models/task.dart';
 import 'package:dream/widgets/datepicker.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -28,14 +26,10 @@ class _WorkBodyWidgetState extends State<WorkBodyWidget> {
   double sourceHeight = 240;
   bool isDragging = false;
 
-  GestureDragUpdateCallback? dragCallback = null;
-  GestureDragEndCallback? dragEndCallback = null;
-
   @override
   Widget build(BuildContext context) {
     final todoProvider = Provider.of<TodoProvider>(context);
     final homeProvider = Provider.of<HomeProvider>(context);
-    //final bodyProvider = Provider.of<BodyProvider>(context);
     bodyController.text = widget.task.body;
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -54,10 +48,6 @@ class _WorkBodyWidgetState extends State<WorkBodyWidget> {
                       )),
                   const SizedBox(width: 8),
                   TextButton(
-                    child: const Text("设置提醒",
-                        style: TextStyle(
-                          color: Colors.black,
-                        )),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.white),
                       overlayColor: MaterialStateProperty.all(Colors.white),
@@ -67,6 +57,10 @@ class _WorkBodyWidgetState extends State<WorkBodyWidget> {
                         homeProvider.switchDatePicker();
                       });
                     },
+                    child: const Text("设置提醒",
+                        style: TextStyle(
+                          color: Colors.black,
+                        )),
                   ),
                 ])),
             TextField(
@@ -92,19 +86,20 @@ class _WorkBodyWidgetState extends State<WorkBodyWidget> {
             Expanded(
                 child: SplitView(
               viewMode: SplitViewMode.Vertical,
-              indicator: SplitIndicator(viewMode: SplitViewMode.Vertical),
+              indicator: const SplitIndicator(viewMode: SplitViewMode.Vertical),
               gripSize: 8,
-              gripColor: Color(0XFFEEEEEE),
-              gripColorActive: Color(0XFFEEEEEE),
+              gripColor: const Color(0XFFEEEEEE),
+              gripColorActive: const Color(0XFFEEEEEE),
               activeIndicator: const SplitIndicator(
                 viewMode: SplitViewMode.Vertical,
                 isActive: true,
               ),
               controller: SplitViewController(
                   limits: [WeightLimit(min: 0.1), WeightLimit(min: 0.1)]),
-              onWeightChanged: (w) => print("Vertical $w"),
+              onWeightChanged: (w) => debugPrint("Vertical $w"),
               children: [
                 Container(
+                  color: Colors.white,
                   child: TextField(
                     keyboardType: TextInputType.multiline,
                     minLines: null,
@@ -124,10 +119,9 @@ class _WorkBodyWidgetState extends State<WorkBodyWidget> {
                           widget.task.key, widget.task.title, text);
                     },
                     onTap: () {
-                      print('Editing stated $widget');
+                      debugPrint('Editing stated $widget');
                     },
                   ),
-                  color: Colors.white,
                 ),
                 Container(
                   color: Colors.white,

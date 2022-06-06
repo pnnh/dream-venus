@@ -49,11 +49,6 @@ class _TitleBarWidget extends State<TitleBarWidget> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           TextButton(
-                              child: SvgPicture.asset(
-                                  "images/svg/arrow_left_s.svg",
-                                  color: routerDelegate.isFirst()
-                                      ? disableColor
-                                      : normalColor),
                               style: ButtonStyle(
                                 minimumSize:
                                     MaterialStateProperty.all(Size.zero),
@@ -70,14 +65,14 @@ class _TitleBarWidget extends State<TitleBarWidget> {
                                   ? null
                                   : () {
                                       routerDelegate.back();
-                                    }),
+                                    },
+                              child: SvgPicture.asset(
+                                  "images/svg/arrow_left_s.svg",
+                                  color: routerDelegate.isFirst()
+                                      ? disableColor
+                                      : normalColor)),
                           const SizedBox(width: 4),
                           TextButton(
-                              child: SvgPicture.asset(
-                                  "images/svg/arrow_right_s.svg",
-                                  color: routerDelegate.isLast()
-                                      ? disableColor
-                                      : normalColor),
                               style: ButtonStyle(
                                 minimumSize:
                                     MaterialStateProperty.all(Size.zero),
@@ -94,7 +89,12 @@ class _TitleBarWidget extends State<TitleBarWidget> {
                                   ? null
                                   : () {
                                       routerDelegate.forward();
-                                    }),
+                                    },
+                              child: SvgPicture.asset(
+                                  "images/svg/arrow_right_s.svg",
+                                  color: routerDelegate.isLast()
+                                      ? disableColor
+                                      : normalColor)),
                         ])),
                 const Text("筑梦笔记"),
                 Container(

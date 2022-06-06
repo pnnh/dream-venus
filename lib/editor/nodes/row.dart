@@ -33,7 +33,7 @@ class SFRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SFPlus(),
+          const SFPlus(),
           const SizedBox(
             width: 8,
           ),

@@ -21,7 +21,7 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -128,9 +128,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   Container(
                     //color: Colors.green,
                     width: double.infinity,
-                    child: Text((_list[index] as Article).content),
                     padding: const EdgeInsets.all(10),
                     margin: const EdgeInsets.only(bottom: 5),
+                    child: Text((_list[index] as Article).content),
                   ),
                   Container(
                     width: double.infinity,
@@ -201,10 +201,11 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Row(
           children: [
             Expanded(
-              child: Container(),
               flex: _mainRowFlex(context, false),
+              child: Container(),
             ),
             Expanded(
+              flex: _mainRowFlex(context, true),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 // crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,6 +249,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Expanded(
+                              flex: 1,
                               child: TextField(
                                 autofocus: true,
                                 maxLines: null,
@@ -265,13 +267,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                                 controller: myController,
                               ),
-                              flex: 1,
                             )
                           ],
                         ),
                         Row(
                           children: <Widget>[
                             Expanded(
+                              flex: 1,
                               child: Container(
                                   //color: Colors.lime,
                                   // child: FlatButton(
@@ -280,9 +282,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                   // ),
                                   // alignment: Alignment.centerLeft,
                                   ),
-                              flex: 1,
                             ),
                             Expanded(
+                              flex: 2,
                               child: Container(
                                   padding: const EdgeInsets.only(
                                       top: 10, bottom: 10),
@@ -298,7 +300,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                     },
                                   ),
                                   alignment: Alignment.centerRight),
-                              flex: 2,
                             ),
                           ],
                         ),
@@ -309,6 +310,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   // ),
 
                   Expanded(
+                    flex: 3,
                     child: Container(
                         padding: const EdgeInsets.only(top: 10),
                         //color: Colors.lime,
@@ -335,7 +337,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         )
                         //  alignment: Alignment.topRight,
                         ),
-                    flex: 3,
                   ),
 
                   Container(
@@ -348,11 +349,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   )
                 ],
               ),
-              flex: _mainRowFlex(context, true),
             ),
             Expanded(
-              child: Container(),
               flex: _mainRowFlex(context, false),
+              child: Container(),
             ),
           ],
         ));
