@@ -5,6 +5,7 @@ import 'package:dream/widgets/datepicker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:split_view/split_view.dart';
@@ -130,28 +131,7 @@ class _WorkBodyWidgetState extends State<WorkBodyWidget> {
                 ),
                 Container(
                   color: Colors.white,
-                  child: TextField(
-                    keyboardType: TextInputType.multiline,
-                    minLines: null,
-                    maxLines: null,
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.all(4),
-                      border: InputBorder.none,
-                      filled: true,
-                      fillColor: Colors.white,
-                      hoverColor: Colors.white,
-                      hintText: "任务正文2",
-                    ),
-                    controller: bodyController,
-                    onChanged: (text) {
-                      debugPrint("WorkBodyWidget body update 2 $text");
-                      todoProvider.putItem(
-                          widget.task.key, widget.task.title, text);
-                    },
-                    onTap: () {
-                      debugPrint('Editing stated2 $widget');
-                    },
-                  ),
+                  child: Markdown(data: bodyController.text),
                 ),
               ],
             ))
