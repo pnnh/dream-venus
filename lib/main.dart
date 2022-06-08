@@ -28,7 +28,7 @@ void main() async {
       platformName = "Windows";
     }
   }
-  debugPrint("platformName :- " + platformName.toString());
+  debugPrint("platformName :- $platformName");
 
   setPathUrlStrategy();
   var app = await application.initApp();

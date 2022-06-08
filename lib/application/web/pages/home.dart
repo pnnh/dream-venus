@@ -37,8 +37,62 @@ class ArticleItemWidget extends StatelessWidget {
   }
 }
 
-class HomePageWidget extends StatelessWidget {
+class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key? key}) : super(key: key);
+
+  @override
+  State<HomePageWidget> createState() => _HomePageWidgetState();
+}
+
+class _HomePageWidgetState extends State<HomePageWidget> {
+  final int INDEX_PAGE_SIZE = 5;
+  int currentPage = 1;
+
+  Widget renderPagination(
+      BuildContext context, int articlesCount, void Function(int) callback) {
+    int maxPage = articlesCount ~/ INDEX_PAGE_SIZE;
+    if (articlesCount % INDEX_PAGE_SIZE != 0) {
+      maxPage += 1;
+    }
+    if (currentPage > maxPage) {
+      currentPage = maxPage;
+    }
+    int startPage = currentPage - 5;
+    int endPage = currentPage + 5;
+
+    if (startPage < 1) {
+      startPage = 1;
+    }
+    if (endPage > maxPage) {
+      endPage = maxPage;
+    }
+    int prevPage = currentPage - 1;
+    int nextPage = currentPage + 1;
+
+    return Row(
+      children: [
+        if (currentPage >= 1)
+          TextButton(
+              child: Text("«"),
+              onPressed: () {
+                debugPrint("prevPage $prevPage");
+              }),
+        for (int n = startPage; n < endPage; ++n)
+          TextButton(
+              child: Text(n.toString()),
+              onPressed: () {
+                debugPrint("currentPage $n");
+              }),
+        if (currentPage <= maxPage)
+          TextButton(
+              child: Text("»"),
+              onPressed: () {
+                debugPrint("nextPage $nextPage");
+              })
+      ],
+    );
+    return Text("ddddd");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,11 +120,13 @@ class HomePageWidget extends StatelessWidget {
                 ),
                 child: Query(
                   options: QueryOptions(
-                    document: gql(readRepositories),
-                    variables: const {"offset": 0, "limit": 20},
-                  ),
+                      document: gql(readRepositories),
+                      variables: {"offset": 0, "limit": INDEX_PAGE_SIZE},
+                      cacheRereadPolicy: CacheRereadPolicy.ignoreAll),
                   builder: (QueryResult result,
                       {VoidCallback? refetch, FetchMore? fetchMore}) {
+                    final int count = result.data?['count'];
+
                     if (result.hasException) {
                       return Text(result.exception.toString());
                     }
@@ -105,37 +161,24 @@ class HomePageWidget extends StatelessWidget {
                                 })),
                         if (fetchMore != null)
                           Container(
-                              child: TextButton(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text("Load More"),
-                              ],
-                            ),
-                            onPressed: () {
-                              final int count = result.data?['count'];
+                              child: renderPagination(context, count, (page) {
+                            setState(() {
+                              currentPage = page;
+                            });
 
-                              FetchMoreOptions opts = FetchMoreOptions(
-                                variables: const {"offset": 10, "limit": 20},
-                                updateQuery:
-                                    (previousResultData, fetchMoreResultData) {
-                                  // this function will be called so as to combine both the original and fetchMore results
-                                  // it allows you to combine them as you would like
-                                  // final List<dynamic> repos = [
-                                  //   ...previousResultData?['data']['articles']
-                                  //       as List<dynamic>,
-                                  //   ...fetchMoreResultData?['data']['articles']
-                                  //       as List<dynamic>
-                                  // ];
-                                  //
-                                  // fetchMoreResultData?['data']['articles'] = repos;
-
-                                  return fetchMoreResultData;
-                                },
-                              );
-                              fetchMore(opts);
-                            },
-                          ))
+                            int offset = (page - 1) * INDEX_PAGE_SIZE;
+                            FetchMoreOptions opts = FetchMoreOptions(
+                              variables: {
+                                "offset": offset,
+                                "limit": INDEX_PAGE_SIZE
+                              },
+                              updateQuery:
+                                  (previousResultData, fetchMoreResultData) {
+                                return fetchMoreResultData;
+                              },
+                            );
+                            fetchMore(opts);
+                          }))
                       ],
                     );
                   },

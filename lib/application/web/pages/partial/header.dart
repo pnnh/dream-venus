@@ -19,23 +19,6 @@ class HeaderWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextButton(
-                      style: ButtonStyle(
-                          splashFactory: NoSplash.splashFactory,
-                          overlayColor:
-                              MaterialStateProperty.all(Colors.transparent)),
-                      onPressed: () async {
-                        routerDelegate.go("/");
-                      },
-                      child: const Text(
-                        "sfx.xyz",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: "Cookie",
-                            fontWeight: FontWeight.w700,
-                            fontSize: 36),
-                      ),
-                    ),
                     Expanded(
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
