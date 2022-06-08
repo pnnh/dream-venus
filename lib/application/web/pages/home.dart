@@ -43,10 +43,11 @@ class HomePageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String readRepositories = """
-  query ReadRepositories {
-    articles {
+  query index(\$offset: Int!, \$limit: Int!) {
+    articles(offset: \$offset, limit: \$limit) {
         title
     }
+    count
 }
 """;
 
@@ -63,35 +64,10 @@ class HomePageWidget extends StatelessWidget {
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
-                // child: Column(
-                //   mainAxisAlignment: MainAxisAlignment.start,
-                //   children: [
-                //     ArticleItemWidget(),
-                //     Container(
-                //         margin: EdgeInsets.all(8),
-                //         height: 1,
-                //         color: Color(0xFFE5E6EC)),
-                //     ArticleItemWidget(),
-                //     Container(
-                //         margin: EdgeInsets.all(8),
-                //         height: 1,
-                //         color: Color(0xFFE5E6EC)),
-                //     ArticleItemWidget(),
-                //     Container(
-                //         margin: EdgeInsets.all(8),
-                //         height: 1,
-                //         color: Color(0xFFE5E6EC)),
-                //     ArticleItemWidget()
-                //   ],
-                // ),
                 child: Query(
                   options: QueryOptions(
                     document: gql(readRepositories),
-                    // this is the query string you just created
-                    variables: const {
-                      'nRepositories': 50,
-                    },
-                    //pollInterval: const Duration(seconds: 10),
+                    variables: const {"offset": 0, "limit": 20},
                   ),
                   builder: (QueryResult result,
                       {VoidCallback? refetch, FetchMore? fetchMore}) {
@@ -109,20 +85,59 @@ class HomePageWidget extends StatelessWidget {
                       return const Text('No repositories');
                     }
 
-                    return ListView.builder(
-                        itemCount: repositories.length,
-                        itemBuilder: (context, index) {
-                          final repository = repositories[index];
+                    return Column(
+                      children: [
+                        Expanded(
+                            child: ListView.builder(
+                                itemCount: repositories.length,
+                                itemBuilder: (context, index) {
+                                  final repository = repositories[index];
 
-                          //return Text(repository['title'] ?? '');
-                          return Column(children: [
-                            ArticleItemWidget(title: repository['title'] ?? ''),
-                            Container(
-                                margin: const EdgeInsets.all(8),
-                                height: 1,
-                                color: const Color(0xFFE5E6EC)),
-                          ]);
-                        });
+                                  //return Text(repository['title'] ?? '');
+                                  return Column(children: [
+                                    ArticleItemWidget(
+                                        title: repository['title'] ?? ''),
+                                    Container(
+                                        margin: const EdgeInsets.all(8),
+                                        height: 1,
+                                        color: const Color(0xFFE5E6EC)),
+                                  ]);
+                                })),
+                        if (fetchMore != null)
+                          Container(
+                              child: TextButton(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text("Load More"),
+                              ],
+                            ),
+                            onPressed: () {
+                              final int count = result.data?['count'];
+
+                              FetchMoreOptions opts = FetchMoreOptions(
+                                variables: const {"offset": 10, "limit": 20},
+                                updateQuery:
+                                    (previousResultData, fetchMoreResultData) {
+                                  // this function will be called so as to combine both the original and fetchMore results
+                                  // it allows you to combine them as you would like
+                                  // final List<dynamic> repos = [
+                                  //   ...previousResultData?['data']['articles']
+                                  //       as List<dynamic>,
+                                  //   ...fetchMoreResultData?['data']['articles']
+                                  //       as List<dynamic>
+                                  // ];
+                                  //
+                                  // fetchMoreResultData?['data']['articles'] = repos;
+
+                                  return fetchMoreResultData;
+                                },
+                              );
+                              fetchMore(opts);
+                            },
+                          ))
+                      ],
+                    );
                   },
                 )))
       ],
