@@ -68,30 +68,33 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     }
     int prevPage = currentPage - 1;
     int nextPage = currentPage + 1;
+    debugPrint("pages $currentPage $prevPage $nextPage $maxPage");
 
     return Row(
       children: [
-        if (currentPage >= 1)
+        if (prevPage >= 1)
           TextButton(
               child: Text("«"),
               onPressed: () {
                 debugPrint("prevPage $prevPage");
+                callback(prevPage);
               }),
-        for (int n = startPage; n < endPage; ++n)
+        for (int n = startPage; n <= endPage; ++n)
           TextButton(
               child: Text(n.toString()),
               onPressed: () {
                 debugPrint("currentPage $n");
+                callback(n);
               }),
-        if (currentPage <= maxPage)
+        if (nextPage <= maxPage)
           TextButton(
               child: Text("»"),
               onPressed: () {
                 debugPrint("nextPage $nextPage");
+                callback(nextPage);
               })
       ],
     );
-    return Text("ddddd");
   }
 
   @override
@@ -125,8 +128,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       cacheRereadPolicy: CacheRereadPolicy.ignoreAll),
                   builder: (QueryResult result,
                       {VoidCallback? refetch, FetchMore? fetchMore}) {
-                    final int count = result.data?['count'];
-
                     if (result.hasException) {
                       return Text(result.exception.toString());
                     }
@@ -134,6 +135,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     if (result.isLoading) {
                       return const Text('Loading');
                     }
+                    debugPrint("result ${result.data}");
+                    final int count = result.data?['count'];
 
                     List? repositories = result.data?['articles'];
 

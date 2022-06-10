@@ -32,7 +32,8 @@ class _WebApplicationState extends State<WebApplication> {
     ValueNotifier<GraphQLClient> client = ValueNotifier(
       GraphQLClient(
         link: link,
-        cache: GraphQLCache(store: HiveStore()),
+        //cache: GraphQLCache(store: HiveStore()),
+        cache: GraphQLCache(store: InMemoryStore()),
       ),
     );
 
