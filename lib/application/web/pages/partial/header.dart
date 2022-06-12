@@ -45,23 +45,7 @@ class HeaderWidget extends StatelessWidget {
                                 overlayColor: MaterialStateProperty.all(
                                     Colors.transparent)),
                             onPressed: () async {
-                              routerDelegate.go("/");
-                            },
-                            child: const Text(
-                              "实用工具",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16),
-                            ),
-                          ),
-                          TextButton(
-                            style: ButtonStyle(
-                                splashFactory: NoSplash.splashFactory,
-                                overlayColor: MaterialStateProperty.all(
-                                    Colors.transparent)),
-                            onPressed: () async {
-                              routerDelegate.go("/");
+                              routerDelegate.go("/random");
                             },
                             child: const Text(
                               "随机值",

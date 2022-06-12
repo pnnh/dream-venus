@@ -62,40 +62,14 @@ class WebRouterDelegate extends RouterDelegate<WebRoutePath>
     return _stack.last;
   }
 
-  // bool isFirst() {
-  //   return _currentIndex == 0;
-  // }
-  //
-  // bool isLast() {
-  //   return _currentIndex == _stack.length - 1;
-  // }
-
   void go(String location) {
     debugPrint("go $location $_currentIndex");
     var newRoute = WebRoutePath(location);
-    // for (var i = _currentIndex + 1; i < _stack.length; i++) {
-    //   _stack.removeAt(i);
-    // }
+
     _stack.add(newRoute);
     _currentIndex++;
     notifyListeners();
   }
-
-  // void back() {
-  //   debugPrint("back $_currentIndex");
-  //   if (_stack.length > 1 && _currentIndex > 0) {
-  //     _currentIndex--;
-  //   }
-  //   notifyListeners();
-  // }
-  //
-  // void forward() {
-  //   debugPrint("forward $_currentIndex");
-  //   if (_currentIndex < _stack.length - 1) {
-  //     _currentIndex++;
-  //   }
-  //   notifyListeners();
-  // }
 
   @override
   Future<void> setInitialRoutePath(WebRoutePath configuration) {

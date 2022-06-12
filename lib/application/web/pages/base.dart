@@ -1,6 +1,8 @@
 import 'dart:math';
 
-import 'package:dream/application/web/pages/home.dart';
+import 'package:dream/application/web/pages/home/home.dart';
+import 'package:dream/application/web/pages/random.dart';
+import 'package:dream/application/web/pages/read.dart';
 import 'package:dream/application/web/route.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +40,11 @@ Widget selectPage(Uri uri) {
   switch (uri.path) {
     case "/login":
       return const LoginWidget();
+    case "/read":
+      return const ReadPage();
+    case "/random":
+      return const RandomPage();
     default:
-      return const HomePageWidget();
+      return const HomePage();
   }
 }
