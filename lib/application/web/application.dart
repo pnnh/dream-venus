@@ -32,8 +32,8 @@ class _WebApplicationState extends State<WebApplication> {
     ValueNotifier<GraphQLClient> client = ValueNotifier(
       GraphQLClient(
         link: link,
-        //cache: GraphQLCache(store: HiveStore()),
-        cache: GraphQLCache(store: InMemoryStore()),
+        cache: GraphQLCache(store: HiveStore()),
+        //cache: GraphQLCache(store: InMemoryStore()),
       ),
     );
 
@@ -42,10 +42,16 @@ class _WebApplicationState extends State<WebApplication> {
       child: MaterialApp.router(
         title: '网页应用',
         theme: ThemeData(
+          primarySwatch: Colors.blue,
           primaryColor: Colors.white,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           //fontFamily: "WqyMicroHeiLite", // 全局默认字体，CanvasKit下需要设置否则会加载许多谷歌字体
-          fontFamily: "WqyMicroHeiLite", // 全局默认字体，CanvasKit下需要设置否则会加载许多谷歌字体
+          fontFamily: "WqyMicroHeiLite",
+          // 全局默认字体，CanvasKit下需要设置否则会加载许多谷歌字体
+          textTheme: Theme.of(context).textTheme.apply(
+                bodyColor: Colors.black, //<-- SEE HERE
+                displayColor: Colors.black, //<-- SEE HERE
+              ),
         ),
         debugShowCheckedModeBanner: false,
         routerDelegate: _routerDelegate,

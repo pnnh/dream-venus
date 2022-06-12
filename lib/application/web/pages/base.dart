@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dream/application/web/pages/home.dart';
 import 'package:dream/application/web/route.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +18,14 @@ class WebPage extends Page {
     return CustomPageRoute(
       (BuildContext context) {
         debugPrint("createRoute ${routePath.uri}");
-        return Scaffold(
-          body: selectPage(routePath.uri),
+        return LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return ConstrainedBox(
+              constraints: BoxConstraints.tightFor(
+                  height: max(500, constraints.maxHeight)),
+              child: Scaffold(body: selectPage(routePath.uri)), // your column
+            );
+          },
         );
       },
       settings: this,

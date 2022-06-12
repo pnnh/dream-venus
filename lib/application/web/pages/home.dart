@@ -1,6 +1,7 @@
-import 'package:dream/application/web/pages/partial/header.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+
+import 'partial/header.dart';
 
 class ArticleItemWidget extends StatelessWidget {
   String title;
@@ -45,7 +46,7 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
-  final int INDEX_PAGE_SIZE = 5;
+  final int INDEX_PAGE_SIZE = 10;
   int currentPage = 1;
 
   Widget renderPagination(
@@ -108,85 +109,81 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 }
 """;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return SingleChildScrollView(
+        child: Column(
       children: [
         const HeaderWidget(),
         const SizedBox(height: 16),
-        Expanded(
-            child: Container(
-                width: 1024,
-                padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                ),
-                child: Query(
-                  options: QueryOptions(
-                      document: gql(readRepositories),
-                      variables: {"offset": 0, "limit": INDEX_PAGE_SIZE},
-                      cacheRereadPolicy: CacheRereadPolicy.ignoreAll),
-                  builder: (QueryResult result,
-                      {VoidCallback? refetch, FetchMore? fetchMore}) {
-                    if (result.hasException) {
-                      return Text(result.exception.toString());
-                    }
+        Container(
+            width: 1024,
+            padding: const EdgeInsets.all(8),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+            ),
+            child: Query(
+              options: QueryOptions(
+                  document: gql(readRepositories),
+                  variables: {"offset": 0, "limit": INDEX_PAGE_SIZE},
+                  cacheRereadPolicy: CacheRereadPolicy.ignoreAll),
+              builder: (QueryResult result,
+                  {VoidCallback? refetch, FetchMore? fetchMore}) {
+                if (result.hasException) {
+                  return Text(result.exception.toString());
+                }
 
-                    if (result.isLoading) {
-                      return const Text('Loading');
-                    }
-                    debugPrint("result ${result.data}");
-                    final int count = result.data?['count'];
+                if (result.isLoading) {
+                  return const Text('Loading');
+                }
+                debugPrint("result ${result.data}");
+                final int count = result.data?['count'];
 
-                    List? repositories = result.data?['articles'];
+                List? repositories = result.data?['articles'];
 
-                    if (repositories == null) {
-                      return const Text('No repositories');
-                    }
+                if (repositories == null) {
+                  return const Text('No repositories');
+                }
 
-                    return Column(
-                      children: [
-                        Expanded(
-                            child: ListView.builder(
-                                itemCount: repositories.length,
-                                itemBuilder: (context, index) {
-                                  final repository = repositories[index];
+                return Column(
+                    children: List.generate(repositories.length + 1, (index) {
+                  if (index < repositories.length) {
+                    final repository = repositories[index];
+                    //return Text(repository['title'] ?? '');
+                    return Column(children: [
+                      ArticleItemWidget(title: repository['title'] ?? ''),
+                      Container(
+                          margin: const EdgeInsets.all(8),
+                          height: 1,
+                          color: const Color(0xFFE5E6EC)),
+                    ]);
+                  } else if (fetchMore != null) {
+                    return Column(children: [
+                      Container(
+                          child: renderPagination(context, count, (page) {
+                        setState(() {
+                          currentPage = page;
+                        });
 
-                                  //return Text(repository['title'] ?? '');
-                                  return Column(children: [
-                                    ArticleItemWidget(
-                                        title: repository['title'] ?? ''),
-                                    Container(
-                                        margin: const EdgeInsets.all(8),
-                                        height: 1,
-                                        color: const Color(0xFFE5E6EC)),
-                                  ]);
-                                })),
-                        if (fetchMore != null)
-                          Container(
-                              child: renderPagination(context, count, (page) {
-                            setState(() {
-                              currentPage = page;
-                            });
-
-                            int offset = (page - 1) * INDEX_PAGE_SIZE;
-                            FetchMoreOptions opts = FetchMoreOptions(
-                              variables: {
-                                "offset": offset,
-                                "limit": INDEX_PAGE_SIZE
-                              },
-                              updateQuery:
-                                  (previousResultData, fetchMoreResultData) {
-                                return fetchMoreResultData;
-                              },
-                            );
-                            fetchMore(opts);
-                          }))
-                      ],
-                    );
-                  },
-                )))
+                        int offset = (page - 1) * INDEX_PAGE_SIZE;
+                        FetchMoreOptions opts = FetchMoreOptions(
+                          variables: {
+                            "offset": offset,
+                            "limit": INDEX_PAGE_SIZE
+                          },
+                          updateQuery:
+                              (previousResultData, fetchMoreResultData) {
+                            return fetchMoreResultData;
+                          },
+                        );
+                        fetchMore(opts);
+                      }))
+                    ]);
+                  }
+                  return Column(children: []);
+                }));
+              },
+            ))
       ],
-    );
+    ));
   }
 }
