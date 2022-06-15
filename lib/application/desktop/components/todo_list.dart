@@ -44,24 +44,6 @@ class _TodoListWidget extends State<TodoListWidget> {
             ))),
             child: Column(
               children: [
-                Row(children: [
-                  IconButton(
-                      icon: SvgPicture.asset(
-                        homeProvider.showFilter
-                            ? "images/svg/menu_unfold.svg"
-                            : "images/svg/menu_fold.svg",
-                        color: const Color.fromRGBO(153, 153, 153, 100),
-                      ),
-                      iconSize: 24,
-                      onPressed: () {
-                        homeProvider.switchFilter();
-                      }),
-                  const Text("收集箱",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                      ))
-                ]),
                 const SizedBox(height: 16),
                 SizedBox(
                     height: 40,

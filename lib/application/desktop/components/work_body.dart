@@ -1,10 +1,8 @@
 import 'package:dream/application/desktop/provider/home.dart';
 import 'package:dream/application/desktop/provider/todo.dart';
 import 'package:dream/services/models/task.dart';
-import 'package:dream/widgets/datepicker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:split_view/split_view.dart';
 
@@ -36,33 +34,6 @@ class _WorkBodyWidgetState extends State<WorkBodyWidget> {
       child: Stack(
         children: [
           Column(children: [
-            SizedBox(
-                height: 32,
-                child: Row(children: [
-                  SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: SvgPicture.asset(
-                        "images/svg/calendar_2.svg",
-                        color: const Color.fromRGBO(153, 153, 153, 100),
-                      )),
-                  const SizedBox(width: 8),
-                  TextButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.white),
-                      overlayColor: MaterialStateProperty.all(Colors.white),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        homeProvider.switchDatePicker();
-                      });
-                    },
-                    child: const Text("设置提醒",
-                        style: TextStyle(
-                          color: Colors.black,
-                        )),
-                  ),
-                ])),
             TextField(
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
@@ -85,18 +56,19 @@ class _WorkBodyWidgetState extends State<WorkBodyWidget> {
             const SizedBox(height: 24),
             Expanded(
                 child: SplitView(
-              viewMode: SplitViewMode.Vertical,
-              indicator: const SplitIndicator(viewMode: SplitViewMode.Vertical),
+              viewMode: SplitViewMode.Horizontal,
+              indicator:
+                  const SplitIndicator(viewMode: SplitViewMode.Horizontal),
               gripSize: 8,
               gripColor: const Color(0XFFEEEEEE),
               gripColorActive: const Color(0XFFEEEEEE),
               activeIndicator: const SplitIndicator(
-                viewMode: SplitViewMode.Vertical,
+                viewMode: SplitViewMode.Horizontal,
                 isActive: true,
               ),
               controller: SplitViewController(
                   limits: [WeightLimit(min: 0.1), WeightLimit(min: 0.1)]),
-              onWeightChanged: (w) => debugPrint("Vertical $w"),
+              onWeightChanged: (w) => debugPrint("Horizontal $w"),
               children: [
                 Container(
                   color: Colors.white,
@@ -130,24 +102,6 @@ class _WorkBodyWidgetState extends State<WorkBodyWidget> {
               ],
             ))
           ]),
-          if (homeProvider.showDatePicker)
-            Positioned(
-              left: 0,
-              top: 40,
-              child: Container(
-                height: 200,
-                width: 200,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: const Color.fromRGBO(229, 229, 229, 100),
-                    width: 1,
-                  ),
-                  borderRadius: const BorderRadius.all(Radius.circular(4)),
-                ),
-                child: const MyDatePickerApp(),
-              ),
-            )
         ],
       ),
     );
