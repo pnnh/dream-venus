@@ -3,8 +3,8 @@ import 'package:dream/application/desktop/components/work_body.dart';
 import 'package:dream/application/desktop/provider/home.dart';
 import 'package:dream/application/desktop/provider/todo.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:split_view/split_view.dart';
 
 import 'empty.dart';
 
@@ -31,10 +31,21 @@ class _TodoListWidget extends State<TodoListWidget> {
     final homeProvider = Provider.of<HomeProvider>(context);
 
     return Expanded(
-        child: Row(
+        child: SplitView(
+      viewMode: SplitViewMode.Horizontal,
+      indicator: const SplitIndicator(viewMode: SplitViewMode.Horizontal),
+      gripSize: 2,
+      gripColor: const Color(0XFFEEEEEE),
+      gripColorActive: const Color(0XFFEEEEEE),
+      activeIndicator: const SplitIndicator(
+        viewMode: SplitViewMode.Horizontal,
+        isActive: true,
+      ),
+      controller: SplitViewController(
+          limits: [WeightLimit(min: 0.2, max: 0.5), WeightLimit(min: 0.1)]),
+      onWeightChanged: (w) => debugPrint("Horizontal $w"),
       children: [
         Container(
-            width: 360,
             padding: const EdgeInsets.all(16),
             decoration: const BoxDecoration(
                 border: Border(
@@ -95,14 +106,12 @@ class _TodoListWidget extends State<TodoListWidget> {
                 ))
               ],
             )),
-        Expanded(
-            child: Container(
-                color: Colors.white,
-                child: currentItem != null
-                    ? WorkBodyWidget(
-                        task: currentItem.task,
-                        controller: currentItem.controller)
-                    : const EmptyWidget(message: "点击左侧标题查看详情")))
+        Container(
+            color: Colors.white,
+            child: currentItem != null
+                ? WorkBodyWidget(
+                    task: currentItem.task, controller: currentItem.controller)
+                : const EmptyWidget(message: "点击左侧标题查看详情"))
       ],
     ));
   }

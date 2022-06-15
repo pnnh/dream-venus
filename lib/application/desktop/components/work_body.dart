@@ -27,7 +27,6 @@ class _WorkBodyWidgetState extends State<WorkBodyWidget> {
   @override
   Widget build(BuildContext context) {
     final todoProvider = Provider.of<TodoProvider>(context);
-    final homeProvider = Provider.of<HomeProvider>(context);
     bodyController.text = widget.task.body;
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -55,51 +54,30 @@ class _WorkBodyWidgetState extends State<WorkBodyWidget> {
             ),
             const SizedBox(height: 24),
             Expanded(
-                child: SplitView(
-              viewMode: SplitViewMode.Horizontal,
-              indicator:
-                  const SplitIndicator(viewMode: SplitViewMode.Horizontal),
-              gripSize: 8,
-              gripColor: const Color(0XFFEEEEEE),
-              gripColorActive: const Color(0XFFEEEEEE),
-              activeIndicator: const SplitIndicator(
-                viewMode: SplitViewMode.Horizontal,
-                isActive: true,
+                child: Container(
+              color: Colors.white,
+              child: TextField(
+                keyboardType: TextInputType.multiline,
+                minLines: null,
+                maxLines: null,
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.all(4),
+                  border: InputBorder.none,
+                  filled: true,
+                  fillColor: Colors.white,
+                  hoverColor: Colors.white,
+                  hintText: "任务正文",
+                ),
+                controller: bodyController,
+                onChanged: (text) {
+                  debugPrint("WorkBodyWidget body update $text");
+                  todoProvider.putItem(
+                      widget.task.key, widget.task.title, text);
+                },
+                onTap: () {
+                  debugPrint('Editing stated $widget');
+                },
               ),
-              controller: SplitViewController(
-                  limits: [WeightLimit(min: 0.1), WeightLimit(min: 0.1)]),
-              onWeightChanged: (w) => debugPrint("Horizontal $w"),
-              children: [
-                Container(
-                  color: Colors.white,
-                  child: TextField(
-                    keyboardType: TextInputType.multiline,
-                    minLines: null,
-                    maxLines: null,
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.all(4),
-                      border: InputBorder.none,
-                      filled: true,
-                      fillColor: Colors.white,
-                      hoverColor: Colors.white,
-                      hintText: "任务正文",
-                    ),
-                    controller: bodyController,
-                    onChanged: (text) {
-                      debugPrint("WorkBodyWidget body update $text");
-                      todoProvider.putItem(
-                          widget.task.key, widget.task.title, text);
-                    },
-                    onTap: () {
-                      debugPrint('Editing stated $widget');
-                    },
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: Markdown(data: bodyController.text),
-                ),
-              ],
             ))
           ]),
         ],
