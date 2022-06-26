@@ -1,4 +1,5 @@
 import 'package:dream/application/web/pages/partial/header.dart';
+import 'package:dream/services/account.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:validators/validators.dart';
@@ -11,7 +12,8 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
-  TextEditingController emailController = TextEditingController(text: "");
+  TextEditingController emailController =
+      TextEditingController(text: "larry@sfx.xyz");
   TextEditingController codeController = TextEditingController(text: "");
   String errorMessage = '';
 
@@ -101,6 +103,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                     }
                     debugPrint(
                         "--> ${emailController.text} ${codeController.text}");
+                    doLogin(emailController.text, codeController.text);
                   },
                   child: const Text(
                     "登录",

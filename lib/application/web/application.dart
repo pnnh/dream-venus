@@ -18,7 +18,7 @@ class _WebApplicationState extends State<WebApplication> {
   @override
   Widget build(BuildContext context) {
     final HttpLink httpLink = HttpLink(
-      'http://127.0.0.1:5500/graphql',
+      'http://127.0.0.1:8080/graphql',
     );
 
     final AuthLink authLink = AuthLink(

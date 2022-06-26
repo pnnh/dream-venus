@@ -12,6 +12,7 @@ class CustomPageRoute extends MaterialPageRoute {
 
 class WebRoutePath {
   late Uri uri;
+  static const accountLoginPath = "/account/login";
 
   WebRoutePath(String location) {
     uri = Uri.parse(location);
@@ -19,7 +20,7 @@ class WebRoutePath {
 
   WebRoutePath.home() : this("/");
 
-  WebRoutePath.login() : this("/login");
+  WebRoutePath.login() : this(accountLoginPath);
 }
 
 class WebRouteInformationParser extends RouteInformationParser<WebRoutePath> {
@@ -34,7 +35,7 @@ class WebRouteInformationParser extends RouteInformationParser<WebRoutePath> {
 
   @override
   RouteInformation restoreRouteInformation(WebRoutePath configuration) {
-    return RouteInformation(location: configuration.uri.toString());
+    return RouteInformation(location: configuration.uri.path.toString());
   }
 }
 
@@ -105,7 +106,6 @@ class WebRouterDelegate extends RouterDelegate<WebRoutePath>
     return Navigator(
       key: navigatorKey,
       pages: pages,
-      //pages: [MyPage(_stack[_currentIndex])],
       onPopPage: _onPopPage,
     );
   }

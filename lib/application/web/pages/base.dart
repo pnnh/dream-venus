@@ -6,14 +6,14 @@ import 'package:dream/application/web/pages/read.dart';
 import 'package:dream/application/web/route.dart';
 import 'package:flutter/material.dart';
 
-import 'login.dart';
+import 'account/login.dart';
 
 class WebPage extends Page {
   final WebRoutePath routePath;
 
   WebPage(
     this.routePath,
-  ) : super(name: routePath.uri.toString(), key: ValueKey(routePath));
+  ) : super(name: routePath.uri.path.toString(), key: ValueKey(routePath));
 
   @override
   Route createRoute(BuildContext context) {
@@ -38,7 +38,7 @@ class WebPage extends Page {
 Widget selectPage(Uri uri) {
   debugPrint("uri_path ${uri.path}");
   switch (uri.path) {
-    case "/login":
+    case "/account/login":
       return const LoginWidget();
     case "/read":
       return const ReadPage();

@@ -62,7 +62,7 @@ class HeaderWidget extends StatelessWidget {
                           overlayColor:
                               MaterialStateProperty.all(Colors.transparent)),
                       onPressed: () async {
-                        routerDelegate.go("/login");
+                        routerDelegate.go(WebRoutePath.accountLoginPath);
                       },
                       child: const Text(
                         "登录",
