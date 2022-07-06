@@ -1,26 +1,22 @@
 import 'package:dream/application/web/pages/partial/header.dart';
-import 'package:dream/application/web/route.dart';
-import 'package:dream/services/account.dart';
+import 'package:dream/services/store/isar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:validators/validators.dart';
 
-class LoginWidget extends StatefulWidget {
-  const LoginWidget({Key? key}) : super(key: key);
+class ArticleCreatePage extends StatefulWidget {
+  const ArticleCreatePage({Key? key}) : super(key: key);
 
   @override
-  State<LoginWidget> createState() => _LoginWidgetState();
+  State<ArticleCreatePage> createState() => _ArticleCreatePageState();
 }
 
-class _LoginWidgetState extends State<LoginWidget> {
-  TextEditingController emailController =
-      TextEditingController(text: "larry@sfx.xyz");
-  TextEditingController codeController = TextEditingController(text: "");
+class _ArticleCreatePageState extends State<ArticleCreatePage> {
+  TextEditingController titleController = TextEditingController(text: "新文章");
+  TextEditingController bodyController = TextEditingController(text: "正文");
   String errorMessage = '';
 
   @override
   Widget build(BuildContext context) {
-    var routerDelegate = WebRouterDelegate.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -38,11 +34,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                 child: Focus(
                     child: TextField(
                       autofocus: true,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.text,
                       style: const TextStyle(fontSize: 14),
                       decoration: InputDecoration(
                         hoverColor: Colors.white,
-                        hintText: '请输入邮箱',
+                        hintText: '请输入标题',
                         hintStyle: const TextStyle(fontSize: 14),
                         contentPadding: const EdgeInsets.only(left: 8, top: 4),
                         filled: true,
@@ -55,29 +51,27 @@ class _LoginWidgetState extends State<LoginWidget> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
-                      controller: emailController,
+                      controller: titleController,
                     ),
                     onFocusChange: (hasFocus) {
                       setState(() {
-                        errorMessage = emailController.text.isNotEmpty &&
-                                !isEmail(emailController.text)
-                            ? "邮箱格式有误"
-                            : "";
+                        errorMessage =
+                            titleController.text.isEmpty ? "标题不可为空" : "";
                       });
                     }),
               ),
               Container(
                 padding: const EdgeInsets.all(8),
-                width: 160,
-                height: 48,
+                height: 480,
                 child: TextField(
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 4096,
                   style: const TextStyle(fontSize: 14),
                   decoration: InputDecoration(
                     hoverColor: Colors.white,
-                    hintText: '请输入验证码',
+                    hintText: '请输入文章正文',
                     hintStyle: const TextStyle(fontSize: 14),
-                    contentPadding: const EdgeInsets.only(left: 8, top: 4),
+                    contentPadding: const EdgeInsets.all(8),
                     filled: true,
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
@@ -88,10 +82,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
-                  controller: codeController,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                  controller: bodyController,
                 ),
               ),
               Container(
@@ -100,19 +91,18 @@ class _LoginWidgetState extends State<LoginWidget> {
                   style:
                       ElevatedButton.styleFrom(fixedSize: const Size(100, 32)),
                   onPressed: () async {
-                    if (!isEmail(emailController.text)) {
+                    if (titleController.text.isEmpty ||
+                        bodyController.text.isEmpty) {
                       return;
                     }
-                    debugPrint(
-                        "--> ${emailController.text} ${codeController.text}");
-                    var success = await doLogin(
-                        emailController.text, codeController.text);
-                    if (success) {
-                      routerDelegate.go(WebRoutePath.homePath);
-                    }
+                    await IsarStore.insert();
+                    var allContacts = await IsarStore.findAll();
+                    allContacts?.forEach((element) {
+                      debugPrint("allContacts: ${element.name}");
+                    });
                   },
                   child: const Text(
-                    "登录",
+                    "发布",
                     style: TextStyle(fontSize: 14, height: 1),
                   ),
                 ),

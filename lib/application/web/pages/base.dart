@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dream/application/web/pages/article/create.dart';
 import 'package:dream/application/web/pages/home/home.dart';
 import 'package:dream/application/web/pages/random.dart';
 import 'package:dream/application/web/pages/read.dart';
@@ -40,6 +41,8 @@ Widget selectPage(Uri uri) {
   switch (uri.path) {
     case "/account/login":
       return const LoginWidget();
+    case "/article/create":
+      return const ArticleCreatePage();
     case "/read":
       return const ReadPage();
     case "/random":

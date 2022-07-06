@@ -12,15 +12,19 @@ class CustomPageRoute extends MaterialPageRoute {
 
 class WebRoutePath {
   late Uri uri;
+  static const homePath = "/";
   static const accountLoginPath = "/account/login";
+  static const articleCreatePath = "/article/create";
 
   WebRoutePath(String location) {
     uri = Uri.parse(location);
   }
 
-  WebRoutePath.home() : this("/");
+  WebRoutePath.home() : this(homePath);
 
   WebRoutePath.login() : this(accountLoginPath);
+
+  WebRoutePath.articleCreate() : this(articleCreatePath);
 }
 
 class WebRouteInformationParser extends RouteInformationParser<WebRoutePath> {
