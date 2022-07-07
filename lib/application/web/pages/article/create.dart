@@ -1,7 +1,6 @@
 import 'package:dream/application/web/pages/partial/header.dart';
 import 'package:dream/application/web/route.dart';
 import 'package:dream/services/article/article.dart';
-import 'package:dream/services/store/isar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -101,15 +100,7 @@ class _ArticleCreatePageState extends State<ArticleCreatePage> {
                               style: ElevatedButton.styleFrom(
                                   fixedSize: const Size(80, 32)),
                               onPressed: () async {
-                                if (titleController.text.isEmpty ||
-                                    bodyController.text.isEmpty) {
-                                  return;
-                                }
-                                await IsarStore.insert();
-                                var allContacts = await IsarStore.findAll();
-                                allContacts?.forEach((element) {
-                                  debugPrint("allContacts: ${element.name}");
-                                });
+                                saveArticle(context, false);
                               },
                               child: const Text(
                                 "保存",
@@ -123,16 +114,7 @@ class _ArticleCreatePageState extends State<ArticleCreatePage> {
                               style: ElevatedButton.styleFrom(
                                   fixedSize: const Size(80, 32)),
                               onPressed: () async {
-                                if (titleController.text.isEmpty ||
-                                    bodyController.text.isEmpty) {
-                                  return;
-                                }
-                                var success = await postArticleCreate(
-                                    titleController.text, bodyController.text);
-                                if (success) {
-                                  routerDelegate
-                                      .go(WebRoutePath.articleReadPath);
-                                }
+                                saveArticle(context, true);
                               },
                               child: const Text(
                                 "发布",
@@ -150,6 +132,18 @@ class _ArticleCreatePageState extends State<ArticleCreatePage> {
                     ]))
           ],
         ));
+  }
+
+  void saveArticle(BuildContext context, bool publish) async {
+    if (titleController.text.isEmpty || bodyController.text.isEmpty) {
+      return;
+    }
+    var routerDelegate = WebRouterDelegate.of(context);
+    var success =
+        await postArticleCreate(titleController.text, bodyController.text);
+    if (success) {
+      routerDelegate.go(WebRoutePath.articleReadPath);
+    }
   }
 }
 
