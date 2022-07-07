@@ -1,10 +1,12 @@
+import 'package:dream/services/graphql/mutation.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'route.dart';
 
 class WebApplication extends StatefulWidget {
-  const WebApplication({Key? key}) : super(key: key);
+  final GraphQLClient client;
+  const WebApplication({Key? key, required this.client}) : super(key: key);
 
   @override
   State<WebApplication> createState() => _WebApplicationState();
@@ -17,25 +19,7 @@ class _WebApplicationState extends State<WebApplication> {
 
   @override
   Widget build(BuildContext context) {
-    final HttpLink httpLink = HttpLink(
-      'http://127.0.0.1:8080/graphql',
-    );
-
-    final AuthLink authLink = AuthLink(
-      getToken: () async => 'Bearer <YOUR_PERSONAL_ACCESS_TOKEN>',
-      // OR
-      // getToken: () => 'Bearer <YOUR_PERSONAL_ACCESS_TOKEN>',
-    );
-
-    final Link link = authLink.concat(httpLink);
-
-    ValueNotifier<GraphQLClient> client = ValueNotifier(
-      GraphQLClient(
-        link: link,
-        cache: GraphQLCache(store: HiveStore()),
-        //cache: GraphQLCache(store: InMemoryStore()),
-      ),
-    );
+    ValueNotifier<GraphQLClient> client = ValueNotifier(widget.client);
 
     return GraphQLProvider(
       client: client,
@@ -63,5 +47,11 @@ class _WebApplicationState extends State<WebApplication> {
 
 Future<Widget> initApp() async {
   await initHiveForFlutter();
-  return const WebApplication();
+  var client = await GraphqlMutationClient.getInstance();
+  if (client == null) {
+    throw Exception("获取Graphql客户端出错");
+  }
+  return WebApplication(
+    client: client,
+  );
 }

@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     articles(offset: \$offset, limit: \$limit) {
         title
     }
-    count
+    articlesCount
 }
 """;
 
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                       return const Text('Loading');
                     }
                     debugPrint("result ${result.data}");
-                    final int count = result.data?['count'];
+                    final int count = result.data?['articlesCount'];
 
                     List? repositories = result.data?['articles'];
 
