@@ -15,6 +15,7 @@ class WebRoutePath {
   static const homePath = "/";
   static const accountLoginPath = "/account/login";
   static const articleCreatePath = "/article/create";
+  static const articleReadPath = "/article/read";
 
   WebRoutePath(String location) {
     uri = Uri.parse(location);

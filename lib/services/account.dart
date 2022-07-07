@@ -12,8 +12,9 @@ Future<bool> doLogin(String account, String token) async {
   print('Response body: ${response.body}');
 
   var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
+  var tokenType = decodedResponse['token_type'];
   var accessToken = decodedResponse['access_token'];
   print('status: $accessToken');
-  await IsarStore.insertAuthorization(accessToken);
+  await IsarStore.insertAuthorization(tokenType, accessToken);
   return true;
 }

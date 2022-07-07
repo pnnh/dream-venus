@@ -7,5 +7,6 @@ class Authorization {
   @Id()
   int? id;
 
+  late String tokenType;
   late String accessToken;
 }

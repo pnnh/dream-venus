@@ -1,4 +1,6 @@
 import 'package:dream/application/web/pages/partial/header.dart';
+import 'package:dream/application/web/route.dart';
+import 'package:dream/services/article/article.dart';
 import 'package:dream/services/store/isar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,104 +19,137 @@ class _ArticleCreatePageState extends State<ArticleCreatePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const HeaderWidget(),
-        const SizedBox(height: 16),
-        Container(
-            width: 1024,
-            color: Colors.white,
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                width: 240,
-                height: 48,
-                child: Focus(
-                    child: TextField(
-                      autofocus: true,
-                      keyboardType: TextInputType.text,
-                      style: const TextStyle(fontSize: 14),
-                      decoration: InputDecoration(
-                        hoverColor: Colors.white,
-                        hintText: '请输入标题',
-                        hintStyle: const TextStyle(fontSize: 14),
-                        contentPadding: const EdgeInsets.only(left: 8, top: 4),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Color.fromRGBO(240, 240, 240, 100),
-                              width: 1,
-                              style: BorderStyle.solid),
-                          borderRadius: BorderRadius.circular(4),
+    var routerDelegate = WebRouterDelegate.of(context);
+    return SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const HeaderWidget(),
+            const SizedBox(height: 16),
+            Container(
+                width: 1024,
+                color: Colors.white,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        width: 240,
+                        height: 48,
+                        child: Focus(
+                            child: TextField(
+                              autofocus: true,
+                              keyboardType: TextInputType.text,
+                              style: const TextStyle(fontSize: 14),
+                              decoration: InputDecoration(
+                                hoverColor: Colors.white,
+                                hintText: '请输入标题',
+                                hintStyle: const TextStyle(fontSize: 14),
+                                contentPadding:
+                                    const EdgeInsets.only(left: 8, top: 4),
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Color.fromRGBO(240, 240, 240, 100),
+                                      width: 1,
+                                      style: BorderStyle.solid),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                              controller: titleController,
+                            ),
+                            onFocusChange: (hasFocus) {
+                              setState(() {
+                                errorMessage = titleController.text.isEmpty
+                                    ? "标题不可为空"
+                                    : "";
+                              });
+                            }),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        height: 480,
+                        child: TextField(
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 4096,
+                          style: const TextStyle(fontSize: 14),
+                          decoration: InputDecoration(
+                            hoverColor: Colors.white,
+                            hintText: '请输入文章正文',
+                            hintStyle: const TextStyle(fontSize: 14),
+                            contentPadding: const EdgeInsets.all(8),
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Color.fromRGBO(240, 240, 240, 100),
+                                  width: 1,
+                                  style: BorderStyle.solid),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                          controller: bodyController,
                         ),
                       ),
-                      controller: titleController,
-                    ),
-                    onFocusChange: (hasFocus) {
-                      setState(() {
-                        errorMessage =
-                            titleController.text.isEmpty ? "标题不可为空" : "";
-                      });
-                    }),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                height: 480,
-                child: TextField(
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 4096,
-                  style: const TextStyle(fontSize: 14),
-                  decoration: InputDecoration(
-                    hoverColor: Colors.white,
-                    hintText: '请输入文章正文',
-                    hintStyle: const TextStyle(fontSize: 14),
-                    contentPadding: const EdgeInsets.all(8),
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                          color: Color.fromRGBO(240, 240, 240, 100),
-                          width: 1,
-                          style: BorderStyle.solid),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                  controller: bodyController,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: ElevatedButton(
-                  style:
-                      ElevatedButton.styleFrom(fixedSize: const Size(100, 32)),
-                  onPressed: () async {
-                    if (titleController.text.isEmpty ||
-                        bodyController.text.isEmpty) {
-                      return;
-                    }
-                    await IsarStore.insert();
-                    var allContacts = await IsarStore.findAll();
-                    allContacts?.forEach((element) {
-                      debugPrint("allContacts: ${element.name}");
-                    });
-                  },
-                  child: const Text(
-                    "发布",
-                    style: TextStyle(fontSize: 14, height: 1),
-                  ),
-                ),
-              ),
-              if (errorMessage.isNotEmpty)
-                Container(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(errorMessage,
-                        style: const TextStyle(color: Colors.red)))
-            ]))
-      ],
-    );
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  fixedSize: const Size(80, 32)),
+                              onPressed: () async {
+                                if (titleController.text.isEmpty ||
+                                    bodyController.text.isEmpty) {
+                                  return;
+                                }
+                                await IsarStore.insert();
+                                var allContacts = await IsarStore.findAll();
+                                allContacts?.forEach((element) {
+                                  debugPrint("allContacts: ${element.name}");
+                                });
+                              },
+                              child: const Text(
+                                "保存",
+                                style: TextStyle(fontSize: 14, height: 1),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  fixedSize: const Size(80, 32)),
+                              onPressed: () async {
+                                if (titleController.text.isEmpty ||
+                                    bodyController.text.isEmpty) {
+                                  return;
+                                }
+                                var success = await postArticleCreate(
+                                    titleController.text, bodyController.text);
+                                if (success) {
+                                  routerDelegate
+                                      .go(WebRoutePath.articleReadPath);
+                                }
+                              },
+                              child: const Text(
+                                "发布",
+                                style: TextStyle(fontSize: 14, height: 1),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (errorMessage.isNotEmpty)
+                        Container(
+                            padding: const EdgeInsets.all(8),
+                            child: Text(errorMessage,
+                                style: const TextStyle(color: Colors.red)))
+                    ]))
+          ],
+        ));
   }
 }
 

@@ -50,9 +50,12 @@ class IsarStore {
     return allContacts;
   }
 
-  static Future<void> insertAuthorization(String accessToken) async {
+  static Future<void> insertAuthorization(
+      String tokenType, String accessToken) async {
     var instance = await _getInstance();
-    final auth = Authorization()..accessToken = accessToken;
+    final auth = Authorization()
+      ..tokenType = tokenType
+      ..accessToken = accessToken;
 
     await instance.isar?.writeTxn((isar) async {
       auth.id = await isar.authorizations.put(auth);
